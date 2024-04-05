@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+
+  app:
+    build:
+      context: ../
+      dockerfile: build/package/Dockerfile
+    image: cars-app
+    container_name: cars-app
+    env_file:
+      - ../.env
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    restart: always
+
+  db:
+    image: postgres
+    container_name: cars-db
+    env_file:
+      - ../.env
+    volumes:
+      - ../migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always

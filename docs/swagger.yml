@@ -1,0 +1,170 @@
+openapi: 3.0.3
+
+info:
+  title: Car info
+  version: 0.0.1
+  
+servers: 
+  - url: http://localhost:80/api/v1/
+
+paths:
+  /info:
+    get:
+      parameters:
+        - name: regNum
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /car:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    put:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    delete:
+      parameters:
+        - name: regNum
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /cars:
+    get:
+      parameters:
+        - name: mark
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: ownerName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ownerSurname
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ownerPatronymic
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Car:
+      required:
+        - regNum
+        - mark
+        - model
+        - owner
+      type: object
+      properties:
+        regNum:
+          type: string
+          example: X123XX150
+        mark:
+          type: string
+          example: Lada
+        model:
+          type: string
+          example: Vesta
+        year:
+          type: integer
+          example: 2002
+        owner:
+          $ref: '#/components/schemas/People'
+    People:
+      required:
+        - name
+        - surname
+      type: object
+      properties:
+        name:
+          type: string
+          example: Ivan
+        surname:
+          type: string
+          example: Ivanov
+        patronymic:
+          type: string
+          example: Ivanovich
